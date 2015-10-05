@@ -18,12 +18,16 @@ class User():
         self.dob = dob
         self.uid = uid_gen()
         self.fpass = passwordgen()
-        print("\nWelcome, {firstname}! Your USER ID is {uid}.\n".format(
+        print("\nWillkommen, {firstname}! Deine USER ID ist {uid}.\n".format(
             firstname=self.first, uid=colored(self.uid, "yellow", "on_white",
-                                              attrs=["blink", "bold"])) + "Your one-way\
- password is {passw}. \n".format(passw=colored(self.fpass, "green", "on_white",
-                                               attrs=["blink", "bold"])) + "Remember \
- to change it in your second semester.")
+                                              attrs=["blink", "bold"])),
+              "Dein Startpasswort lautet {passw}. \n".format(passw=colored(
+                                                             self.fpass,
+                                                             "green",
+                                                             "on_white",
+                                                             attrs=["blink",
+                                                                    "bold"])),
+              "Vergiss nicht, es im zweiten Semester zu ändern.")
         random_abo()
 
 
@@ -32,9 +36,9 @@ def random_abo():
     rand = random.randint(1, 15000000) % 10
     magazine, price = get_abo()
     if rand < 3:
-        print("Congratulations! You just opted in for an abonnement " +
-              "of the '{magazine}' for {now} just {price} Points per year! \
-Please pay this now.".format(magazine=magazine, now=colored("NOW", "red",
+        print("Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
+Zeitschrift '{magazine}' {now} für nur {price} PPunkte pro Jahr! \
+Please pay this now.".format(magazine=magazine, now=colored("JETZT", "red",
                                                             attrs=["blink"]),
                              price=price))
 
@@ -90,24 +94,24 @@ def startup():
 
 
 def welcome():
-    print("-"*80 +
-          "\n{sp}* ZIH identity management *\n".format(sp=' '*26) +
-          "{sp}[Semester {n}]\n".format(sp=' '*67, n=semester) +
-          "      1 - Add a new user\n" +
-          "      2 - List all users\n" +
-          "      3 - Change a users password\n")
+    print("-" * 80,
+          "\n{sp}* ZIH Identitätsmanagement *\n".format(sp=' ' * 26),
+          "{sp}[Semester {n}]\n".format(sp=' ' * 67, n=semester),
+          "      1 - Neuen Studenten immatrikulieren\n",
+          "      2 - Liste der Studenten\n",
+          "      3 - Passwort eines Studenten ändern\n")
 
 
 def commands():
     global semester
-    cmd = input("Your choice? ")
+    cmd = input("Deine Auswahl: ")
     if cmd == "exit":
         quit()
     random.seed()
     rand = random.randint(1, 15000000) % 10
     if rand < 4:
-        print("The system is currently experiencing some problems.\n" +
-              "Please stand by...")
+        print("Der Server antwortet nicht.\n" +
+              "Bitte warten...")
         # sleep(120) TODO
     if cmd == "1":
         adduser()
@@ -117,16 +121,16 @@ def commands():
         if semester == 2:
             changepass()
         else:
-            print("You can only change your password in the second semester!")
+            print("Das Ändern des Passworts ist nur im zweiten Semester möglich!")
             chill()
     elif cmd == "42":
-        print("You found a secret!")
+        print("Du hast ein Geheimnis gefunden!")
         changepass()
     elif cmd == "semester++":
         semester += 1
         os.system('clear')
     else:
-        print("Seems like you mistyped something. Try again.\n")
+        print("Du hast irgendwas falschen getippt. Versuche es erneut.\n")
         commands()
 
 
@@ -154,16 +158,16 @@ def passwordgen():
 
 def changepass():
     changed = False
-    user = input("Please enter your User ID: ")
+    user = input("Trage deine User ID ein: ")
     for u in users:
         if user == u.uid:
-            inp = input("Please enter your new password: ")
+            inp = input("Gib dein neues Passwort ein: ")
             u.fpass = len(inp) * '*'
-            print("Password successfully changed!")
+            print("Passwort erfolgreich geändert!")
             changed = True
             save()
     if not changed:
-        print("You entered a wrong User ID. That's a little bit dumb.")
+        print("Das ist eine falsche User ID. Das war ein bisschen dumm.")
     random_abo()
     chill()
 
@@ -176,14 +180,15 @@ def generator(size=20, chars=string.ascii_uppercase + string.digits):
 
 
 def adduser():
-    print("Adding a new user to the database.\n")
-    fname = input("Please enter your first name: ")
-    lname = input("Please enter your last name: ")
-    dob = input("Please enter your date of birth (dd.mm.yyyy): ")
+    print("Füge einen neuen Studenten zur Datenbank hinzu.\n")
+    fname = input("Vorname: ")
+    lname = input("Nachname: ")
+    dob = input("Gebutsdatum (dd.mm.yyyy): ")
     while not re.match(r'[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}', dob):
-        print(colored("\nWRONG DATE!", "red"), "\n\nreloading input...")
+        print(colored("\nFALSCHE DATUMSANGABE!", "red"), "\n\nLade Eingabe \
+neu...")
         sleep(30)
-        dob = input("Please enter your date of birth (dd.mm.yyyy): ")
+        dob = input("Gebutsdatum (dd.mm.yyyy): ")
     users.append(User(fname, lname, dob))
     save()
     chill()
@@ -191,22 +196,23 @@ def adduser():
 
 def listusers():
     if len(users) == 0:
-        print("No users stored in the database.")
+        print("Keine Sudenten in der Datenbank.")
         return
     os.system('clear')
-    print('First Name       Last Name    D.o.B.     User ID              ' +
-          'One-Way Password \n' +
-          '-'*79)
+    #                       |            |          |
+    print('Vorame           Nachname     Geb.-datum User ID              ' +
+          'Startpassword \n' +
+          '-' * 79)
     for user in users:
         print('{first}{space} '.format(first=user.first,
-                                       space=' '*(16-len(user.first))) +
+                                       space=' ' * (16 - len(user.first))) +
               '{last}{space} '.format(last=user.last,
-                                      space=' '*(12-len(user.last))) +
+                                      space=' ' * (12 - len(user.last))) +
               '{dob} '.format(dob=user.dob) +
               '{uid}{space} '.format(uid=user.uid,
-                                     space=' '*(20-len(user.uid))) +
+                                     space=' ' * (20 - len(user.uid))) +
               '{fpass}{space} '.format(fpass=user.fpass,
-                                       space=' '*(16-len(user.fpass))))
+                                       space=' ' * (16 - len(user.fpass))))
     chill()
 
 
