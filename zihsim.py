@@ -37,7 +37,7 @@ def random_abo():
     magazine, price = get_abo()
     if rand < 3:
         print("Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
-Zeitschrift '{magazine}' {now} für nur {price} PPunkte pro Jahr! \
+Zeitschrift '{magazine}' {now} für nur {price} Punkte pro Jahr! \
 Please pay this now.".format(magazine=magazine, now=colored("JETZT", "red",
                                                             attrs=["blink"]),
                              price=price))
@@ -130,7 +130,7 @@ def commands():
         semester += 1
         os.system('clear')
     else:
-        print("Du hast irgendwas falschen getippt. Versuche es erneut.\n")
+        print("Du hast irgendwas falsches eingetippt. Versuche es erneut.\n")
         commands()
 
 
@@ -196,12 +196,12 @@ neu...")
 
 def listusers():
     if len(users) == 0:
-        print("Keine Sudenten in der Datenbank.")
+        print("Keine Studenten in der Datenbank.")
         return
     os.system('clear')
     #                       |            |          |
     print('Vorame           Nachname     Geb.-datum User ID              ' +
-          'Startpassword \n' +
+          'Startpasswort \n' +
           '-' * 79)
     for user in users:
         print('{first}{space} '.format(first=user.first,
