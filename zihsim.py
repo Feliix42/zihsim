@@ -1,9 +1,3 @@
-'''
-TODO:
-varying length of user ID
-translate 2 german
-'''
-
 import re
 import os
 import pickle
