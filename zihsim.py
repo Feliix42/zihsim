@@ -1,15 +1,16 @@
 '''
-troll-level :D
-ladezeiten (1min)
-
-RANDOM abo abschließen :D
+TODO:
+varying length of user ID
+translate 2 german
 '''
 
+import re
 import os
 import pickle
 import string
 import random
-import time
+from time import sleep
+from termcolor import colored
 
 users = []
 semester = 1
@@ -24,29 +25,38 @@ class User():
         self.uid = uid_gen()
         self.fpass = passwordgen()
         print("\nWelcome, {firstname}! Your USER ID is {uid}.\n".format(
-            firstname=self.first, uid=self.uid) +
-            "Your one-way password is {passw}. \n".format(passw=self.fpass) +
-            "Remember to change it in your second semester.")
+            firstname=self.first, uid=colored(self.uid, "yellow", "on_white",
+                                              attrs=["blink", "bold"])) + "Your one-way\
+ password is {passw}. \n".format(passw=colored(self.fpass, "green", "on_white",
+                                               attrs=["blink", "bold"])) + "Remember \
+ to change it in your second semester.")
         random_abo()
 
 
 def random_abo():
     random.seed()
     rand = random.randint(1, 15000000) % 10
-    print(rand)
+    magazine, price = get_abo()
     if rand < 3:
         print("Congratulations! You just opted in for an abonnement " +
-              "of the '{magazine}'! Please pay this now.".format(
-               magazine=get_abo()))
+              "of the '{magazine}' for {now} just {price} Points per year! \
+Please pay this now.".format(magazine=magazine, now=colored("NOW", "red",
+                                                            attrs=["blink"]),
+                             price=price))
 
 
 def get_abo():
-    abolist = ["Bravo Girl", "Playboy", "HÖRZU", "happinez", "Brigitte Woman",
-               "Emotion Slow", "Tätowier Magazin", "Federwelt",
-               "Der LEUCHTTURM", "Bummi", "Feuerwehrmann Sam"]
+    abodict = {"Bravo Girl": 2, "Playboy": 4, "HÖRZU": 1, "happinez": 5,
+               "Brigitte Woman": 3, "Emotion Slow": 1, "Tätowier Magazin": 4,
+               "Federwelt": 2, "Der LEUCHTTURM": 6, "Bummi": 3,
+               "Feuerwehrmann Sam": 4, "Teen Wolf": 2, "Bravo Sport": 2,
+               "Gala": 4}
     random.seed()
-    i = random.randint(0, len(abolist) - 1)
-    return abolist[i]
+    abolist = []
+    for key in abodict:
+        abolist.append(key)
+    i = abolist[random.randint(0, len(abolist) - 1)]
+    return i, abodict[i]
 
 
 def save():
@@ -64,6 +74,10 @@ def chill(clear=True):
         os.system('pause')
     if clear:
         os.system('clear')
+
+
+def loader(time):
+    print("Progress:")
 
 
 def startup():
@@ -87,19 +101,20 @@ def welcome():
           "{sp}[Semester {n}]\n".format(sp=' '*67, n=semester) +
           "      1 - Add a new user\n" +
           "      2 - List all users\n" +
-          "      3 - Change a users password\n" +
-          "   exit - Leave the program\n")
+          "      3 - Change a users password\n")
 
 
 def commands():
     global semester
     cmd = input("Your choice? ")
+    if cmd == "exit":
+        quit()
     random.seed()
     rand = random.randint(1, 15000000) % 10
     if rand < 4:
         print("The system is currently experiencing some problems.\n" +
               "Please stand by...")
-        # time.sleep(120) TODO
+        # sleep(120) TODO
     if cmd == "1":
         adduser()
     elif cmd == "2":
@@ -139,7 +154,7 @@ def uid_gen():
 
 
 def passwordgen():
-    return generator(10, string.ascii_uppercase + string.ascii_lowercase +
+    return generator(16, string.ascii_uppercase + string.ascii_lowercase +
                      string.digits + string.digits)
 
 
@@ -159,7 +174,7 @@ def changepass():
     chill()
 
 
-def generator(size=8, chars=string.ascii_uppercase + string.digits):
+def generator(size=20, chars=string.ascii_uppercase + string.digits):
     '''
     Generates a string of certain size - a mix of letters & digits by default
     '''
@@ -171,6 +186,10 @@ def adduser():
     fname = input("Please enter your first name: ")
     lname = input("Please enter your last name: ")
     dob = input("Please enter your date of birth (dd.mm.yyyy): ")
+    while not re.match(r'[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}', dob):
+        print(colored("\nWRONG DATE!", "red"), "\n\nreloading input...")
+        sleep(30)
+        dob = input("Please enter your date of birth (dd.mm.yyyy): ")
     users.append(User(fname, lname, dob))
     save()
     chill()
