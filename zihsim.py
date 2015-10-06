@@ -77,21 +77,42 @@ def chill(clear=True):
 
 
 def loader(time):
-    print("Progress:")
-    t = 0
-    # 70 Balkensegmente in 70% der Zeit
-    while t < time * 0.7:
-        print('#', end='')
-        dt = time * 0.8 / 70
-        t += dt
-        sleep(round(dt))
-    # restliche 10 Balken in 30% der Zeit
-    t = 0
-    while t <= time * 0.3:
-        print('#', end='')
-        dt = time * 0.2 / 10
-        t += dt
-        sleep(round(dt))
+    time = time - 5
+    print("Laden...")
+    t_fwd = int(0.1 * time) / 70
+    t_slow_fwd = int(0.3 * time) / 5
+    t_rwd = int(0.2 * time) / 55
+    t_finish = int(0.4 * time) / 60
+    count = 0
+
+    # up to 70 segments
+    for i in range(70):
+        count += 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_fwd)
+
+    # up to 75 segments
+    for i in range(5):
+        count += 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_slow_fwd)
+
+    print('\rEs ist ein Fehler aufgetreten.                                    \
+         \nÄnderungen werden rückgängig gemacht.\n', end=' ')
+    # back to 20 segments
+    for i in range(55):
+        count -= 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_rwd)
+
+    sleep(5)
+    print('\rLaden...            \n', end=' ')
+
+    # up to 80
+    for i in range(60):
+        count += 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_finish)
 
 
 def startup():
