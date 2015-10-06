@@ -39,9 +39,10 @@ def random_abo():
     if rand < 3:
         print("Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
 Zeitschrift '{magazine}' {now} für nur {price} Punkte pro Jahr! \
-Please pay this now.".format(magazine=magazine, now=colored("JETZT", "red",
-                                                            attrs=["blink"]),
-                             price=price))
+Bitte zahle dein Abo sofort.".format(magazine=magazine,
+                                     now=colored("JETZT", "red",
+                                                 attrs=["blink"]),
+                                     price=price))
 
 
 def get_abo():
@@ -77,6 +78,20 @@ def chill(clear=True):
 
 def loader(time):
     print("Progress:")
+    t = 0
+    # 70 Balkensegmente in 70% der Zeit
+    while t < time * 0.7:
+        print('#', end='')
+        dt = time * 0.8 / 70
+        t += dt
+        sleep(round(dt))
+    # restliche 10 Balken in 30% der Zeit
+    t = 0
+    while t <= time * 0.3:
+        print('#', end='')
+        dt = time * 0.2 / 10
+        t += dt
+        sleep(round(dt))
 
 
 def startup():
@@ -122,7 +137,8 @@ def commands():
         if semester == 2:
             changepass()
         else:
-            print("Das Ändern des Passworts ist nur im zweiten Semester möglich!")
+            print("Das Ändern des Passworts ist nur im zweiten Semester \
+            möglich!")
             chill()
     elif cmd == "42":
         print("Du hast ein Geheimnis gefunden!")
