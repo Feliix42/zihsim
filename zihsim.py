@@ -103,7 +103,7 @@ def loader(time):
     # back to 20 segments
     for i in range(55):
         count -= 1
-        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        print('\r{hashtag} '.format(hashtag='#' * count), end=' ')
         sleep(t_rwd)
 
     sleep(5)
@@ -150,7 +150,6 @@ def commands():
     rand = random.randint(1, sys.maxsize) % 10
     if rand < 4:
         time = random.randint(1, sys.maxsize) % 91 + 30
-        print(time)
         loader(time)
     if cmd == "1":
         adduser()
