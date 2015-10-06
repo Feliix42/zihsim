@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import re
 import os
+import sys
 import pickle
-import string
 import random
+import string
 from time import sleep
 from termcolor import colored
 
@@ -145,11 +146,11 @@ def commands():
     if cmd == "exit":
         quit()
     random.seed()
-    rand = random.randint(1, 15000000) % 10
+    rand = random.randint(1, sys.maxsize) % 10
     if rand < 4:
-        print("Der Server antwortet nicht.\n" +
-              "Bitte warten...")
-        # sleep(120) TODO
+        time = random.randint(1, sys.maxsize) % 91 + 30
+        print(time)
+        loader(time)
     if cmd == "1":
         adduser()
     elif cmd == "2":
