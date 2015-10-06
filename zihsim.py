@@ -114,6 +114,7 @@ def loader(time):
         count += 1
         print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
         sleep(t_finish)
+    print('\n')
 
 
 def startup():
