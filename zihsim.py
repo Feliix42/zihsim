@@ -39,7 +39,7 @@ def random_abo():
     magazine, price = get_abo()
     if rand < 3:
         print('Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
-Zeitschrift "{magazine}" {now} für nur {price} Punkte pro Jahr! \
+Zeitschrift "{magazine}" ({now} für nur {price} Punkte pro Jahr!) entschieden. \
 Bitte zahle dein Abo sofort.'.format(magazine=magazine,
                                      now=colored('JETZT', 'red',
                                                  attrs=['blink']),
@@ -204,8 +204,8 @@ def changepass():
     for u in users:
         if user == u.uid:
             if input('Gib dein altes Passwort ein: ') != u.fpass:
-                print(colored('Falsches Passwort!','red', attrs=['blink']),
-                      '\nAus Sicherheitsgründen müssen wir dich leider \
+                print(colored('Falsches Passwort!', 'red', attrs=['blink']),
+                      '\nAus Sicherheitzgründen müssen wir dich leider \
 exmatrikulieren.\nDas tut uns sehr Leid!')
                 users.remove(u)
                 print_doge()
@@ -234,7 +234,7 @@ def adduser():
     print('Füge einen neuen Studenten zur Datenbank hinzu.\n')
     fname = input('Vorname: ')
     lname = input('Nachname: ')
-    dob = input('Gebutsdatum (dd.mm.yyyy): ')
+    dob = input('Geburtsdatum (dd.mm.yyyy): ')
     while not re.match(r'[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}', dob):
         print(colored('\nFALSCHE DATUMSANGABE!', 'red'), '\n\nLade Eingabe \
 neu...')
@@ -273,8 +273,9 @@ def main():
         welcome()
         commands()
 
+
 def print_doge():
-    print(colored('''
+    print('''
          ▄              ▄
         ▌▒█           ▄▀▒▌
         ▌▒▒▀▄       ▄▀▒▒▒▐
@@ -295,7 +296,7 @@ def print_doge():
    ▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
-Such exmatriculation. Much sorry''', 'white', attrs=['blink']))
+Such exmatriculation. Much sorry''')
 
 if __name__ == '__main__':
     main()
