@@ -148,7 +148,7 @@ def commands():
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', ['semester--'], '42'] :
+    if rand < 4 and cmd not in ['semester++', 'semester--', '42']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
