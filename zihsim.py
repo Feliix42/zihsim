@@ -274,7 +274,7 @@ def main():
         commands()
 
 def print_doge():
-    print('''
+    print(colored('''
          ▄              ▄
         ▌▒█           ▄▀▒▌
         ▌▒▒▀▄       ▄▀▒▒▒▐
@@ -295,7 +295,7 @@ def print_doge():
    ▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
-Such exmatriculation. Much sorry''')
+Such exmatriculation. Much sorry''', 'white', attrs=['blink']))
 
 if __name__ == '__main__':
     main()
