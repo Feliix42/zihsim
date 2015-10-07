@@ -10,7 +10,7 @@ from termcolor import colored
 
 users = []
 semester = 1
-backupfile = "./backup.pkl"
+backupfile = './backup.pkl'
 
 
 class User():
@@ -20,16 +20,16 @@ class User():
         self.dob = dob
         self.uid = uid_gen()
         self.fpass = passwordgen()
-        print("\nWillkommen, {firstname}! Deine USER ID ist {uid}.\n".format(
-            firstname=self.first, uid=colored(self.uid, "yellow", "on_white",
-                                              attrs=["blink", "bold"])),
-              "Dein Startpasswort lautet {passw}. \n".format(passw=colored(
+        print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.\n'.format(
+            firstname=self.first, uid=colored(self.uid, 'yellow', 'on_white',
+                                              attrs=['blink', 'bold'])),
+              'Dein Startpasswort lautet {passw}. \n'.format(passw=colored(
                                                              self.fpass,
-                                                             "green",
-                                                             "on_white",
-                                                             attrs=["blink",
-                                                                    "bold"])),
-              "Vergiss nicht, es im zweiten Semester zu ändern.")
+                                                             'green',
+                                                             'on_white',
+                                                             attrs=['blink',
+                                                                    'bold'])),
+              'Vergiss nicht, es im zweiten Semester zu ändern.')
         random_abo()
 
 
@@ -38,20 +38,20 @@ def random_abo():
     rand = random.randint(1, 15000000) % 10
     magazine, price = get_abo()
     if rand < 3:
-        print("Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
-Zeitschrift '{magazine}' {now} für nur {price} Punkte pro Jahr! \
-Bitte zahle dein Abo sofort.".format(magazine=magazine,
-                                     now=colored("JETZT", "red",
-                                                 attrs=["blink"]),
+        print('Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
+Zeitschrift "{magazine}" {now} für nur {price} Punkte pro Jahr! \
+Bitte zahle dein Abo sofort.'.format(magazine=magazine,
+                                     now=colored('JETZT', 'red',
+                                                 attrs=['blink']),
                                      price=price))
 
 
 def get_abo():
-    abodict = {"Bravo Girl": 2, "Playboy": 4, "HÖRZU": 1, "happinez": 5,
-               "Brigitte Woman": 3, "Emotion Slow": 1, "Tätowier Magazin": 4,
-               "Federwelt": 2, "Der LEUCHTTURM": 6, "Bummi": 3,
-               "Feuerwehrmann Sam": 4, "Teen Wolf": 2, "Bravo Sport": 2,
-               "Gala": 4}
+    abodict = {'Bravo Girl': 2, 'Playboy': 4, 'HÖRZU': 1, 'happinez': 5,
+               'Brigitte Woman': 3, 'Emotion Slow': 1, 'Tätowier Magazin': 4,
+               'Federwelt': 2, 'Der LEUCHTTURM': 6, 'Bummi': 3,
+               'Feuerwehrmann Sam': 4, 'Teen Wolf': 2, 'Bravo Sport': 2,
+               'Gala': 4, 'Popcorn': 1}
     random.seed()
     abolist = []
     for key in abodict:
@@ -79,7 +79,7 @@ def chill(clear=True):
 
 def loader(time):
     time = time - 5
-    print("Laden...")
+    print('Laden...')
     t_fwd = int(0.1 * time) / 70
     t_slow_fwd = int(0.3 * time) / 5
     t_rwd = int(0.2 * time) / 55
@@ -124,52 +124,52 @@ def startup():
     # this is necessary since we are reassigning the var 'users' here
     global users
     os.system('clear')
-    print("Booting up servers...")
+    print('Booting up servers...')
     if os.path.isfile(backupfile):
-        print("Recovering backup file... ", end="")
+        print('Recovering backup file... ', end='')
         with open(backupfile, 'rb') as fp:
             users = pickle.load(fp)
-        print("[{nr} users recovered]\n".format(nr=len(users)))
+        print('[{nr} users recovered]\n'.format(nr=len(users)))
 
 
 def welcome():
-    print("-" * 80,
-          "\n{sp}* ZIH Identitätsmanagement *\n".format(sp=' ' * 26),
-          "{sp}[Semester {n}]\n".format(sp=' ' * 67, n=semester),
-          "      1 - Neuen Studenten immatrikulieren\n",
-          "      2 - Liste der Studenten\n",
-          "      3 - Passwort eines Studenten ändern\n")
+    print('-' * 80,
+          '\n{sp}* ZIH Identitätsmanagement *\n'.format(sp=' ' * 26),
+          '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
+          '      1 - Neuen Studenten immatrikulieren\n',
+          '      2 - Liste der Studenten\n',
+          '      3 - Passwort eines Studenten ändern\n')
 
 
 def commands():
     global semester
-    cmd = input("Deine Auswahl: ")
-    if cmd == "exit":
+    cmd = input('Deine Auswahl: ')
+    if cmd == 'exit':
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4:
+    if rand < 4 and cmd not in ['semester++', '42'] :
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
-    if cmd == "1":
+    if cmd == '1':
         adduser()
-    elif cmd == "2":
+    elif cmd == '2':
         listusers()
-    elif cmd == "3":
+    elif cmd == '3':
         if semester == 2:
             changepass()
         else:
-            print("Das Ändern des Passworts ist nur im zweiten Semester \
-            möglich!")
+            print('Das Ändern des Passworts ist nur im zweiten Semester \
+möglich!')
             chill()
-    elif cmd == "42":
-        print("Du hast ein Geheimnis gefunden!")
+    elif cmd == '42':
+        print('Du hast ein Geheimnis gefunden!')
         changepass()
-    elif cmd == "semester++":
+    elif cmd == 'semester++':
         semester += 1
         os.system('clear')
     else:
-        print("Du hast irgendwas falsches eingetippt. Versuche es erneut.\n")
+        print('Du hast irgendwas falsches eingetippt. Versuche es erneut.\n')
         commands()
 
 
@@ -197,16 +197,16 @@ def passwordgen():
 
 def changepass():
     changed = False
-    user = input("Trage deine User ID ein: ")
+    user = input('Trage deine User ID ein: ')
     for u in users:
         if user == u.uid:
-            inp = input("Gib dein neues Passwort ein: ")
+            inp = input('Gib dein neues Passwort ein: ')
             u.fpass = len(inp) * '*'
-            print("Passwort erfolgreich geändert!")
+            print('Passwort erfolgreich geändert!')
             changed = True
             save()
     if not changed:
-        print("Das ist eine falsche User ID. Das war ein bisschen dumm.")
+        print('Das ist eine falsche User ID. Das war ein bisschen dumm.')
     random_abo()
     chill()
 
@@ -219,15 +219,15 @@ def generator(size=20, chars=string.ascii_uppercase + string.digits):
 
 
 def adduser():
-    print("Füge einen neuen Studenten zur Datenbank hinzu.\n")
-    fname = input("Vorname: ")
-    lname = input("Nachname: ")
-    dob = input("Gebutsdatum (dd.mm.yyyy): ")
+    print('Füge einen neuen Studenten zur Datenbank hinzu.\n')
+    fname = input('Vorname: ')
+    lname = input('Nachname: ')
+    dob = input('Gebutsdatum (dd.mm.yyyy): ')
     while not re.match(r'[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}', dob):
-        print(colored("\nFALSCHE DATUMSANGABE!", "red"), "\n\nLade Eingabe \
-neu...")
+        print(colored('\nFALSCHE DATUMSANGABE!', 'red'), '\n\nLade Eingabe \
+neu...')
         sleep(30)
-        dob = input("Gebutsdatum (dd.mm.yyyy): ")
+        dob = input('Gebutsdatum (dd.mm.yyyy): ')
     users.append(User(fname, lname, dob))
     save()
     chill()
@@ -235,7 +235,7 @@ neu...")
 
 def listusers():
     if len(users) == 0:
-        print("Keine Studenten in der Datenbank.")
+        print('Keine Studenten in der Datenbank.')
         return
     os.system('clear')
     #                       |            |          |
