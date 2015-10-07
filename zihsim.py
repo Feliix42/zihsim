@@ -205,7 +205,7 @@ def changepass():
         if user == u.uid:
             if input('Gib dein altes Passwort ein: ') != u.fpass:
                 print(colored('Falsches Passwort!','red', attrs=['blink']),
-                      '\nAus Sicherheitzgründen müssen wir dich leider \
+                      '\nAus Sicherheitsgründen müssen wir dich leider \
 exmatrikulieren.\nDas tut uns sehr Leid!')
                 users.remove(u)
                 print_doge()
