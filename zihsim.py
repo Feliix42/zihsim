@@ -168,6 +168,9 @@ möglich!')
     elif cmd == 'semester++':
         semester += 1
         os.system('clear')
+    elif cmd == 'semester--':
+        semester -= 1
+        os.system('clear')
     else:
         print('Du hast irgendwas falsches eingetippt. Versuche es erneut.\n')
         commands()
