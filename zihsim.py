@@ -20,16 +20,16 @@ class User():
         self.dob = dob
         self.uid = uid_gen()
         self.fpass = passwordgen()
-        print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.\n'.format(
+        print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.'.format(
             firstname=self.first, uid=colored(self.uid, 'yellow', 'on_white',
                                               attrs=['blink', 'bold'])),
-              'Dein Startpasswort lautet {passw}. \n'.format(passw=colored(
+              '\nDein Startpasswort lautet {passw}.'.format(passw=colored(
                                                              self.fpass,
                                                              'green',
                                                              'on_white',
                                                              attrs=['blink',
                                                                     'bold'])),
-              'Vergiss nicht, es im zweiten Semester zu ändern.')
+              '\nVergiss nicht, es im zweiten Semester zu ändern.')
         random_abo()
 
 
@@ -148,7 +148,7 @@ def commands():
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', '42'] :
+    if rand < 4 and cmd not in ['semester++', ['semester--'], '42'] :
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -203,6 +203,14 @@ def changepass():
     user = input('Trage deine User ID ein: ')
     for u in users:
         if user == u.uid:
+            if input('Gib dein altes Passwort ein: ') != u.fpass:
+                print(colored('Falsches Passwort!','red', attrs=['blink']),
+                      '\nAus Sicherheitzgründen müssen wir dich leider \
+exmatrikulieren.\nDas tut uns sehr Leid!')
+                users.remove(u)
+                save()
+                chill()
+                return
             inp = input('Gib dein neues Passwort ein: ')
             u.fpass = len(inp) * '*'
             print('Passwort erfolgreich geändert!')
