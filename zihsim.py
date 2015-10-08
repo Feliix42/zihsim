@@ -11,6 +11,7 @@ from termcolor import colored
 users = []
 semester = 1
 backupfile = './backup.pkl'
+en = False
 
 
 class User():
@@ -20,16 +21,32 @@ class User():
         self.dob = dob
         self.uid = uid_gen()
         self.fpass = passwordgen()
-        print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.'.format(
-            firstname=self.first, uid=colored(self.uid, 'yellow', 'on_white',
-                                              attrs=['blink', 'bold'])),
-              '\nDein Startpasswort lautet {passw}.'.format(passw=colored(
-                                                             self.fpass,
-                                                             'green',
-                                                             'on_white',
-                                                             attrs=['blink',
-                                                                    'bold'])),
-              '\nVergiss nicht, es im zweiten Semester zu ändern.')
+        if en:
+            print('\nWelcome, {firstname}! Your USER ID is {uid}.'.format(
+                  firstname=self.first, uid=colored(self.uid, 'yellow',
+                                                    'on_white',
+                                                    attrs=['blink', 'bold'])),
+                  '\nYour one-time passwors is {passw}.'.format(passw=colored(
+                                                                self.fpass,
+                                                                'green',
+                                                                'on_white',
+                                                                attrs=['blink',
+                                                                       'bold'])
+                                                                ),
+                  "\nDon't forget to chance it in the second semester.")
+        else:
+            print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.'.format(
+                  firstname=self.first, uid=colored(self.uid, 'yellow',
+                                                    'on_white',
+                                                    attrs=['blink', 'bold'])),
+                  '\nDein Startpasswort lautet {passw}.'.format(passw=colored(
+                                                                self.fpass,
+                                                                'green',
+                                                                'on_white',
+                                                                attrs=['blink',
+                                                                       'bold'])
+                                                                ),
+                  '\nVergiss nicht, es im zweiten Semester zu ändern.')
         random_abo()
 
 
@@ -38,7 +55,15 @@ def random_abo():
     rand = random.randint(1, 15000000) % 10
     magazine, price = get_abo()
     if rand < 3:
-        print('Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
+        if en:
+            print('Congratulations! You got an abbonoment of the magazin \
+"{magazine}" ({now} for just {price} points per Year!). \
+Please pay now.'.format(magazine=magazine,
+                        now=colored('NOW', 'red',
+                                    attrs=['blink']),
+                        price=price))
+        else:
+            print('Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
 Zeitschrift "{magazine}" ({now} für nur {price} Punkte pro Jahr!) entschieden. \
 Bitte zahle dein Abo sofort.'.format(magazine=magazine,
                                      now=colored('JETZT', 'red',
@@ -79,7 +104,10 @@ def chill(clear=True):
 
 def loader(time):
     time = time - 5
-    print('Laden...')
+    if en:
+        print('Loading...')
+    else:
+        print('Laden...')
     t_fwd = int(0.1 * time) / 70
     t_slow_fwd = int(0.3 * time) / 5
     t_rwd = int(0.2 * time) / 55
@@ -98,8 +126,13 @@ def loader(time):
         print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
         sleep(t_slow_fwd)
 
-    print('\rEs ist ein Fehler aufgetreten.                                    \
-         \nÄnderungen werden rückgängig gemacht.\n', end=' ')
+    if en:
+        print('\rAn error occured.                                                          \
+ \nChanges beeing reverted.\n', end=' ')
+    else:
+        print('\rEs ist ein Fehler aufgetreten.                                             \
+\nÄnderungen werden rückgängig gemacht.\n', end=' ')
+
     # back to 20 segments
     for i in range(55):
         count -= 1
@@ -107,7 +140,10 @@ def loader(time):
         sleep(t_rwd)
 
     sleep(5)
-    print('\rLaden...            \n', end=' ')
+    if en:
+        print('\rLoading...          \n', end=' ')
+    else:
+        print('\rLaden...            \n', end=' ')
 
     # up to 80
     for i in range(60):
@@ -133,22 +169,33 @@ def startup():
 
 
 def welcome():
-    print('-' * 80,
-          '\n{sp}* ZIH Identitätsmanagement *\n'.format(sp=' ' * 26),
-          '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
-          '      1 - Neuen Studenten immatrikulieren\n',
-          '      2 - Liste der Studenten\n',
-          '      3 - Passwort eines Studenten ändern\n')
+    if en:
+        print('-' * 80,
+              '\n{sp}* ZIH Identity managent *\n'.format(sp=' ' * 26),
+              '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
+              '      1 - Matriculate a new student\n',
+              '      2 - List all students\n',
+              '      3 - Change password of an student\n\n',
+              '      Um zu deutsch zu wechseln tippe "de"\n')
+    else:
+        print('-' * 80,
+              '\n{sp}* ZIH Identitätsmanagement *\n'.format(sp=' ' * 26),
+              '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
+              '      1 - Neuen Studenten immatrikulieren\n',
+              '      2 - Liste der Studenten\n',
+              '      3 - Passwort eines Studenten ändern\n\n',
+              '      To change to english type "en"\n')
 
 
 def commands():
     global semester
+    global en
     cmd = input('Deine Auswahl: ')
     if cmd == 'exit':
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', 'semester--', '42']:
+    if rand < 4 and cmd not in ['semester++', 'semester--', '42', 'en', 'de']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -159,11 +206,17 @@ def commands():
         if semester == 2:
             changepass()
         else:
-            print('Das Ändern des Passworts ist nur im zweiten Semester \
+            if en:
+                print('You can change passwords only in the second semester!')
+            else:
+                print('Das Ändern des Passworts ist nur im zweiten Semester \
 möglich!')
             chill()
     elif cmd == '42':
-        print('Du hast ein Geheimnis gefunden!')
+        if en:
+            print('You found a secret!')
+        else:
+            print('Du hast ein Geheimnis gefunden!')
         changepass()
     elif cmd == 'semester++':
         semester += 1
@@ -171,8 +224,22 @@ möglich!')
     elif cmd == 'semester--':
         semester -= 1
         os.system('clear')
+    elif cmd == 'en':
+        print(colored('Changing language...', 'red'))
+        en = True
+        loader(60)
+        os.system('clear')
+    elif cmd == 'de':
+        print(colored('Wechsele Sprache...', 'red'))
+        en = False
+        loader(60)
+        os.system('clear')
     else:
-        print('Du hast irgendwas falsches eingetippt. Versuche es erneut.\n')
+        if en:
+            print('You tiped something wrong. Please try again.\n')
+        else:
+            print('Du hast irgendwas falsches eingetippt. Versuche es erneut.\
+\n')
         commands()
 
 
@@ -200,12 +267,16 @@ def passwordgen():
 
 def changepass():
     changed = False
-    user = input('Trage deine User ID ein: ')
+    user = ''
+    if en:
+        user = input('Type in your User ID: ')
+    else:
+        user = input('Trage deine User ID ein: ')
     for u in users:
         if user == u.uid:
             if input('Gib dein altes Passwort ein: ') != u.fpass:
                 print(colored('Falsches Passwort!', 'red', attrs=['blink']),
-                      '\nAus Sicherheitzgründen müssen wir dich leider \
+                      '\nAus Sicherheitsgründen müssen wir dich leider \
 exmatrikulieren.\nDas tut uns sehr Leid!')
                 users.remove(u)
                 print_doge()
@@ -275,7 +346,7 @@ def main():
 
 
 def print_doge():
-    print('''
+    print(colored('''
          ▄              ▄
         ▌▒█           ▄▀▒▌
         ▌▒▒▀▄       ▄▀▒▒▒▐
@@ -296,7 +367,7 @@ def print_doge():
    ▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
-Such exmatriculation. Much sorry''')
+Such exmatriculation. Much sorry'''), 'white', attrs=['blink'])
 
 if __name__ == '__main__':
     main()
