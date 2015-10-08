@@ -313,7 +313,7 @@ def adduser():
         print(colored('\nFALSCHE DATUMSANGABE!', 'red'), '\n\nLade Eingabe \
 neu...')
         sleep(30)
-        dob = input('Gebutsdatum (dd.mm.yyyy): ')
+        dob = input('Geburtsdatum (dd.mm.yyyy): ')
     users.append(User(fname, lname, dob))
     save()
     chill()
@@ -322,6 +322,7 @@ neu...')
 def listusers():
     if len(users) == 0:
         print('Keine Studenten in der Datenbank.')
+        chill()
         return
     os.system('clear')
     #                       |            |          |
@@ -384,7 +385,7 @@ def print_doge():
    ▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
-Such exmatriculation. Much sorry''', 'white', attrs=['blink']))
+Such exmatriculation. Much sorry''', 'white'))
 
 if __name__ == '__main__':
     main()
