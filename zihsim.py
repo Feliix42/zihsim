@@ -195,7 +195,8 @@ def commands():
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', 'semester--', '42', 'en', 'de']:
+    if rand < 4 and cmd not in ['semester++', 'semester--', '42', 'en', 'de',
+                                'wartung']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -234,9 +235,11 @@ möglich!')
         en = False
         loader(60)
         os.system('clear')
+    elif cmd == 'wartung':
+        wartung()
     else:
         if en:
-            print('You tiped something wrong. Please try again.\n')
+            print('You typed something wrong. Please try again.\n')
         else:
             print('Du hast irgendwas falsches eingetippt. Versuche es erneut.\
 \n')
@@ -338,6 +341,21 @@ def listusers():
     chill()
 
 
+def wartung():
+    os.system('clear')
+    print('-' * 80)
+    print('\n                        {wa}'.format(wa=colored(
+        'Das System wird gerade gewartet.', 'magenta', attrs=['bold'])) +
+        '\n' + ' '*29 + 'Bitte gehen Sie weg.\n')
+    print('-'*80)
+    if(input("") != 'done'):
+        wartung()
+    else:
+        os.system('clear')
+        return
+
+
+
 def main():
     startup()
     while True:
@@ -367,7 +385,7 @@ def print_doge():
    ▐▀▒▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
-Such exmatriculation. Much sorry'''), 'white', attrs=['blink'])
+Such exmatriculation. Much sorry''', 'white', attrs=['blink']))
 
 if __name__ == '__main__':
     main()
