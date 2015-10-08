@@ -346,14 +346,13 @@ def wartung():
     print('-' * 80)
     print('\n                        {wa}'.format(wa=colored(
         'Das System wird gerade gewartet.', 'magenta', attrs=['bold'])) +
-        '\n' + ' '*29 + 'Bitte gehen Sie weg.\n')
-    print('-'*80)
+        '\n' + ' ' * 29 + 'Bitte gehen Sie weg.\n')
+    print('-' * 80)
     if(input("") != 'done'):
         wartung()
     else:
         os.system('clear')
         return
-
 
 
 def main():
