@@ -8,9 +8,13 @@ import string
 from time import sleep
 from termcolor import colored
 
+# the global users list - is being dumped to the backup file
 users = []
+# semester counter
 semester = 1
+# location of the backup file
 backupfile = './backup.pkl'
+# controlls the language
 en = False
 
 
@@ -198,7 +202,7 @@ def welcome():
               '      1 - Matriculate a new student\n',
               '      2 - List all students\n',
               '      3 - Change password of an student\n\n',
-              '      Um zu deutsch zu wechseln tippe "de"\n')
+              '      Um zu Deutsch zu wechseln tippe "de"\n')
     else:
         print('-' * 80,
               '\n{sp}* ZIH Identitätsmanagement *\n'.format(sp=' ' * 26),
@@ -246,11 +250,19 @@ möglich!')
             print('Du hast ein Geheimnis gefunden!')
         changepass()
     elif cmd == 'semester++':
-        semester += 1
-        os.system('clear')
+        if semester >= 4:
+            print("Auch Admins müssen bisschen mitdenken. Mehr geht nicht!")
+            chill()
+        else:
+            semester += 1
+            os.system('clear')
     elif cmd == 'semester--':
-        semester -= 1
-        os.system('clear')
+        if semester <= 1:
+            print("Auch Admins müssen bisschen mitdenken. Weniger ist nicht!")
+            chill()
+        else:
+            semester -= 1
+            os.system('clear')
     elif cmd == 'en':
         print(colored('Changing language...', 'red'))
         en = True
