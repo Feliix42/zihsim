@@ -15,6 +15,9 @@ en = False
 
 
 class User():
+    '''
+    The User Class instantiates an object for each user that is created.
+    '''
     def __init__(self, first, last, dob):
         self.first = first
         self.last = last
@@ -51,12 +54,16 @@ class User():
 
 
 def random_abo():
+    '''
+    When called, there's a 30% chance that the user opts in for an abbonement
+    of a randomly chosen magazine.
+    '''
     random.seed()
-    rand = random.randint(1, 15000000) % 10
+    rand = random.randint(1, sys.maxsize) % 10
     magazine, price = get_abo()
     if rand < 3:
         if en:
-            print('Congratulations! You got an abbonoment of the magazin \
+            print('Congratulations! You got an abbonoment of the magazine \
 "{magazine}" ({now} for just {price} points per Year!). \
 Please pay now.'.format(magazine=magazine,
                         now=colored('NOW', 'red',
@@ -72,6 +79,10 @@ Bitte zahle dein Abo sofort.'.format(magazine=magazine,
 
 
 def get_abo():
+    '''
+    Choses a random magazine from the dict below and returns the name and the
+    corresponding price
+    '''
     abodict = {'Bravo Girl': 2, 'Playboy': 4, 'HÖRZU': 1, 'happinez': 5,
                'Brigitte Woman': 3, 'Emotion Slow': 1, 'Tätowier Magazin': 4,
                'Federwelt': 2, 'Der LEUCHTTURM': 6, 'Bummi': 3,
@@ -86,13 +97,17 @@ def get_abo():
 
 
 def save():
+    '''
+    Dumps the list of users to the backup file
+    '''
     with open(backupfile, 'wb') as fp:
         pickle.dump(users, fp)
 
 
 def chill(clear=True):
     '''
-    Makes the system 'chill' for a while and clears the screen afterwards
+    Freezes the script execution, listens for any input ("any key") and clears
+    the screen afterwards.
     '''
     try:
         os.system('read')
@@ -103,6 +118,10 @@ def chill(clear=True):
 
 
 def loader(time):
+    '''
+    A loading animation that is being called with the amount of time,
+    the system should display the animation.
+    '''
     time = time - 5
     if en:
         print('Loading...')
@@ -159,16 +178,19 @@ def startup():
     '''
     # this is necessary since we are reassigning the var 'users' here
     global users
-    os.system('clear')
     print('Booting up servers...')
     if os.path.isfile(backupfile):
         print('Recovering backup file... ', end='')
         with open(backupfile, 'rb') as fp:
             users = pickle.load(fp)
         print('[{nr} users recovered]\n'.format(nr=len(users)))
+    os.system('clear')
 
 
 def welcome():
+    '''
+    Presents the user with a welcome message and a list of commands he can use.
+    '''
     if en:
         print('-' * 80,
               '\n{sp}* ZIH Identity managent *\n'.format(sp=' ' * 26),
@@ -188,6 +210,10 @@ def welcome():
 
 
 def commands():
+    '''
+    To be called after welcome(). Gets an input from the user and executes
+    the associated function.
+    '''
     global semester
     global en
     cmd = input('Deine Auswahl: ')
@@ -248,7 +274,7 @@ möglich!')
 
 def uid_gen():
     '''
-    generates a user id that exists only ONCE
+    Generates a user id that exists only ONCE.
     '''
     double = False
     temp_id = generator()
@@ -264,11 +290,18 @@ def uid_gen():
 
 
 def passwordgen():
+    '''
+    Returns a randomly generated password.
+    '''
     return generator(16, string.ascii_uppercase + string.ascii_lowercase +
                      string.digits + string.digits)
 
 
 def changepass():
+    '''
+    Changes the password of a user. Exmatriculates him if he types in
+    a wrong old password.
+    '''
     changed = False
     user = ''
     if en:
@@ -299,12 +332,16 @@ exmatrikulieren.\nDas tut uns sehr Leid!')
 
 def generator(size=20, chars=string.ascii_uppercase + string.digits):
     '''
-    Generates a string of certain size - a mix of letters & digits by default
+    Generates a string of certain size - a mix of letters & digits by default.
     '''
     return ''.join(random.choice(chars) for _ in range(size))
 
 
 def adduser():
+    '''
+    For adding a user to the database. Gets his credentials and creates a new
+    instance of the class User.
+    '''
     print('Füge einen neuen Studenten zur Datenbank hinzu.\n')
     fname = input('Vorname: ')
     lname = input('Nachname: ')
@@ -320,6 +357,9 @@ neu...')
 
 
 def listusers():
+    '''
+    Lists all users stored in the users list.
+    '''
     if len(users) == 0:
         print('Keine Studenten in der Datenbank.')
         chill()
@@ -343,6 +383,9 @@ def listusers():
 
 
 def wartung():
+    '''
+    Puts the script in maintenance mode. Users can't do anything now.
+    '''
     os.system('clear')
     print('-' * 80)
     print('\n                        {wa}'.format(wa=colored(
@@ -364,6 +407,9 @@ def main():
 
 
 def print_doge():
+    '''
+    Such wow. Very Meme.
+    '''
     print(colored('''
          ▄              ▄
         ▌▒█           ▄▀▒▌
