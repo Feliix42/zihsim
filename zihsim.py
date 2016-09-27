@@ -5,6 +5,7 @@ import sys
 import pickle
 import random
 import string
+import signal
 from time import sleep
 from termcolor import colored
 
@@ -22,6 +23,7 @@ class User():
     '''
     The User Class instantiates an object for each user that is created.
     '''
+
     def __init__(self, first, last, dob):
         self.first = first
         self.last = last
@@ -399,10 +401,10 @@ def wartung():
     Puts the script in maintenance mode. Users can't do anything now.
     '''
     os.system('clear')
-    print('-' * 80)
-    print('\n                        {wa}'.format(wa=colored(
-        'Das System wird gerade gewartet.', 'magenta', attrs=['bold'])) +
-        '\n' + ' ' * 29 + 'Bitte gehen Sie weg.\n')
+    print('\n\n\n\n\n', '-' * 80, '\n                        {wa}'.format(
+        wa=colored(
+            'Das System wird gerade gewartet.', 'magenta', attrs=['bold'])) +
+          '\n' + ' ' * 29 + 'Bitte gehen Sie weg.\n')
     print('-' * 80)
     if(input("") != 'done'):
         wartung()
@@ -444,6 +446,12 @@ def print_doge():
   ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▀
 
 Such exmatriculation. Much sorry''', 'white'))
+
+
+def sigint_handler(signal, frame):
+    pass
+
+signal.signal(signal.SIGINT, sigint_handler)
 
 if __name__ == '__main__':
     main()
