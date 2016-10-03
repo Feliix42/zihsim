@@ -380,7 +380,7 @@ def listusers():
         return
     os.system('clear')
     #                       |            |          |
-    print('Vorame           Nachname     Geb.-datum User ID              ' +
+    print('Vorname           Nachname     Geb.-datum User ID              ' +
           'Startpasswort \n' +
           '-' * 79)
     for user in users:
