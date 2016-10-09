@@ -227,8 +227,8 @@ def commands():
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', 'semester--', '42', 'en', 'de',
-                                'wartung']:
+    if rand < 4 and cmd not in ['semester++', 'semester--', '42', '1337',
+                                'credits', 'en', 'de','wartung']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -251,6 +251,14 @@ möglich!')
         else:
             print('Du hast ein Geheimnis gefunden!')
         changepass()
+    elif cmd == '1337':
+        if en:
+            print('You found a secret!')
+        else:
+            print('Du hast ein Geheimnis gefunden!')
+        credits()
+    elif cmd == 'credits':
+        credits()
     elif cmd == 'semester++':
         if semester >= 4:
             print("Auch Admins müssen bisschen mitdenken. Mehr geht nicht!")
@@ -419,6 +427,23 @@ def main():
         welcome()
         commands()
 
+def credits():
+    if en:
+        print('@Feliix42, @h4llow3En and @MarauderXtreme purveyors of aids to ESE mischief-makers are proud to present the\n')
+    else:
+        print('Die hochwohlgeborenen Herren @Feliix42, @h4llow3En und @MarauderXtreme präsentieren stolz den\n')
+    print(colored('''
+▒███████▒ ██▓ ██░ ██      ██████  ██▓ ███▄ ▄███▓ █    ██  ██▓    ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███  
+▒ ▒ ▒ ▄▀░▓██▒▓██░ ██▒   ▒██    ▒ ▓██▒▓██▒▀█▀ ██▒ ██  ▓██▒▓██▒   ▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒
+░ ▒ ▄▀▒░ ▒██▒▒██▀▀██░   ░ ▓██▄   ▒██▒▓██    ▓██░▓██  ▒██░▒██░   ▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒
+  ▄▀▒   ░░██░░▓█ ░██      ▒   ██▒░██░▒██    ▒██ ▓▓█  ░██░▒██░   ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄  
+▒███████▒░██░░▓█▒░██▓   ▒██████▒▒░██░▒██▒   ░██▒▒▒█████▓ ░██████▒▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒
+░▒▒ ▓░▒░▒░▓   ▒ ░░▒░▒   ▒ ▒▓▒ ▒ ░░▓  ░ ▒░   ░  ░░▒▓▒ ▒ ▒ ░ ▒░▓  ░▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░
+░░▒ ▒ ░ ▒ ▒ ░ ▒ ░▒░ ░   ░ ░▒  ░ ░ ▒ ░░  ░      ░░░▒░ ░ ░ ░ ░ ▒  ░ ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░
+░ ░ ░ ░ ░ ▒ ░ ░  ░░ ░   ░  ░  ░   ▒ ░░      ░    ░░░ ░ ░   ░ ░    ░   ▒    ░      ░ ░ ░ ▒    ░░   ░ 
+  ░ ░     ░   ░  ░  ░         ░   ░         ░      ░         ░  ░     ░  ░            ░ ░     ░     
+░                                                                                                   
+''', 'white'))
 
 def print_doge():
     '''
