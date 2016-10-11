@@ -206,7 +206,8 @@ def welcome():
               '{sp}[{n}\n'.format(sp=' ' * 68, n="Protected]" if not sudomode else "S-OFF    ]"),
               '      1 - Matriculate a new student\n',
               '      2 - List all students\n',
-              '      3 - Change password of an student\n\n',
+              '      3 - Change password of an student\n',
+              '      4 - Matriculate a student with temporary login\n\n',
               '      Um zu Deutsch zu wechseln tippe "de"\n')
     else:
         print('-' * 80,
@@ -215,7 +216,8 @@ def welcome():
               '{sp}[{n}\n'.format(sp=' ' * 68, n="Protected]" if not sudomode else "S-OFF    ]"),
               '      1 - Neuen Studenten immatrikulieren\n',
               '      2 - Liste der Studenten\n',
-              '      3 - Passwort eines Studenten ändern\n\n',
+              '      3 - Passwort eines Studenten ändern\n',
+              '      4 - Studenten mit temporären Login immatrikulieren\n\n',
               '      To change to english type "en"\n')
 
 
@@ -250,6 +252,8 @@ def commands():
                 print('Das Ändern des Passworts ist nur im zweiten Semester \
 möglich!')
             chill()
+    elif cmd == '4':
+        adduser(True)
     elif cmd == '42':
         if en:
             print('You found a secret!')
@@ -404,12 +408,13 @@ def generator(size=20, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def adduser():
+def adduser(temorary = False):
     '''
     For adding a user to the database. Gets his credentials and creates a new
     instance of the class User.
     '''
-    print('Füge einen neuen Studenten zur Datenbank hinzu.\n')
+    prompt = 'Füge einen neuen Studenten zur Datenbank hinzu.\n' if not temorary else 'Füge einen neuen Studenten mit temporären Login zur Datenbank hinzu.\n'
+    print(prompt)
     fname = input('Vorname: ')
     lname = input('Nachname: ')
     dob = input('Geburtsdatum (dd.mm.yyyy): ')
