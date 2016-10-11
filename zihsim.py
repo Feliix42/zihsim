@@ -6,8 +6,10 @@ import pickle
 import random
 import string
 import signal
+from getpass import getpass
 from time import sleep
 from termcolor import colored
+import sudoers
 
 # the global users list - is being dumped to the backup file
 users = []
@@ -17,7 +19,8 @@ semester = 1
 backupfile = './backup.pkl'
 # controlls the language
 en = False
-
+# are we in sudo mode?
+sudomode = False
 
 class User():
     '''
@@ -100,7 +103,6 @@ def get_abo():
         abolist.append(key)
     i = abolist[random.randint(0, len(abolist) - 1)]
     return i, abodict[i]
-
 
 def save():
     '''
@@ -201,6 +203,7 @@ def welcome():
         print('-' * 80,
               '\n{sp}* ZIH Identity managent *\n'.format(sp=' ' * 26),
               '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
+              '{sp}[{n}\n'.format(sp=' ' * 68, n="Protected]" if not sudomode else "S-OFF    ]"),
               '      1 - Matriculate a new student\n',
               '      2 - List all students\n',
               '      3 - Change password of an student\n\n',
@@ -209,6 +212,7 @@ def welcome():
         print('-' * 80,
               '\n{sp}* ZIH Identitätsmanagement *\n'.format(sp=' ' * 26),
               '{sp}[Semester {n}]\n'.format(sp=' ' * 67, n=semester),
+              '{sp}[{n}\n'.format(sp=' ' * 68, n="Protected]" if not sudomode else "S-OFF    ]"),
               '      1 - Neuen Studenten immatrikulieren\n',
               '      2 - Liste der Studenten\n',
               '      3 - Passwort eines Studenten ändern\n\n',
@@ -222,13 +226,14 @@ def commands():
     '''
     global semester
     global en
+    global sudomode
     cmd = input('Deine Auswahl: ')
     if cmd == 'exit':
         quit()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
     if rand < 4 and cmd not in ['semester++', 'semester--', '42', 'en', 'de',
-                                'wartung']:
+                                'wartung','sudo']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -251,29 +256,48 @@ möglich!')
         else:
             print('Du hast ein Geheimnis gefunden!')
         changepass()
+    elif cmd == 'sudo':
+        sudo()
+        os.system('clear')
     elif cmd == 'semester++':
         if semester >= 4:
             print("Auch Admins müssen bisschen mitdenken. Mehr geht nicht!")
             chill()
         else:
-            semester += 1
+            if sudomode:
+                semester += 1
+            else:
+                if en:
+                    print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
+                else:
+                    print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
+                loader(60)
             os.system('clear')
     elif cmd == 'semester--':
         if semester <= 1:
             print("Auch Admins müssen bisschen mitdenken. Weniger ist nicht!")
             chill()
         else:
-            semester -= 1
+            if sudomode:
+                semester -= 1
+            else:
+                if en:
+                    print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
+                else:
+                    print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
+                loader(60)
             os.system('clear')
     elif cmd == 'en':
         print(colored('Changing language...', 'red'))
         en = True
-        loader(60)
+        if not sudomode:
+            loader(60)
         os.system('clear')
     elif cmd == 'de':
         print(colored('Wechsele Sprache...', 'red'))
         en = False
-        loader(60)
+        if not sudomode:
+            loader(60)
         os.system('clear')
     elif cmd == 'wartung':
         wartung()
@@ -285,6 +309,35 @@ möglich!')
 \n')
         commands()
 
+def sudo():
+    '''
+    Switches system to sudo mode and back
+    '''
+    global sudomode
+    if not sudomode:
+        userpromt = 'Richard Matthew Stallman is watching you: ' if en else 'Richard Matthew Stallman beobachtet dich: '
+        pwprompt = 'You think this is a good idea: ' if en else 'Denken Sie, dass das eine gute Idee ist: '
+        username = input(userpromt)
+        pw = getpass(pwprompt)
+        if username in sudoers.sudoers:
+            if sudoers.sudoers[username] == pw:
+                sudomode = True
+                chill()
+            else:
+                if en:
+                    print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
+                else:
+                    print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
+                loader(60)
+        else:
+            if en:
+                print(colored("You are not in the sudoers file. This incident will be reported!", 'red'))
+            else:
+                print(colored("Sie sind nicht in der Sudoers Datei. Dieser Vorfall wird gemeldet!", 'red'))
+            loader(60)
+    else:
+        sudomode = False
+        chill()
 
 def uid_gen():
     '''
