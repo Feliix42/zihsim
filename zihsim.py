@@ -72,7 +72,7 @@ def random_abo():
     magazine, price = get_abo()
     if rand < 3:
         if en:
-            print('Congratulations! You got an abbonoment of the magazine \
+            print('Congratulations! You got a subscription of the magazine \
 "{magazine}" ({now} for just {price} points per Year!). \
 Please pay now.'.format(magazine=magazine,
                         now=colored('NOW', 'red',
