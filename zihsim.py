@@ -27,25 +27,27 @@ class User():
     The User Class instantiates an object for each user that is created.
     '''
 
-    def __init__(self, first, last, dob):
+    def __init__(self, first, last, dob, address):
         self.first = first
         self.last = last
         self.dob = dob
+        self.address = address
         self.uid = uid_gen()
         self.fpass = passwordgen()
+        self.password = ''
         if en:
             print('\nWelcome, {firstname}! Your USER ID is {uid}.'.format(
                   firstname=self.first, uid=colored(self.uid, 'yellow',
                                                     'on_white',
                                                     attrs=['blink', 'bold'])),
-                  '\nYour one-time passwors is {passw}.'.format(passw=colored(
+                  '\nYour one-time password is {passw}.'.format(passw=colored(
                                                                 self.fpass,
                                                                 'green',
                                                                 'on_white',
                                                                 attrs=['blink',
                                                                        'bold'])
                                                                 ),
-                  "\nDon't forget to chance it in the second semester.")
+                  "\nDon't forget to change it.")
         else:
             print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.'.format(
                   firstname=self.first, uid=colored(self.uid, 'yellow',
@@ -58,51 +60,7 @@ class User():
                                                                 attrs=['blink',
                                                                        'bold'])
                                                                 ),
-                  '\nVergiss nicht, es im zweiten Semester zu ändern.')
-        random_abo()
-
-
-def random_abo():
-    '''
-    When called, there's a 30% chance that the user opts in for an abbonement
-    of a randomly chosen magazine.
-    '''
-    random.seed()
-    rand = random.randint(1, sys.maxsize) % 10
-    magazine, price = get_abo()
-    if rand < 3:
-        if en:
-            print('Congratulations! You got a subscription of the magazine \
-"{magazine}" ({now} for just {price} points per Year!). \
-Please pay now.'.format(magazine=magazine,
-                        now=colored('NOW', 'red',
-                                    attrs=['blink']),
-                        price=price))
-        else:
-            print('Herzlichen Glückwunsch! Du hast dich für ein Abonnement der \
-Zeitschrift "{magazine}" ({now} für nur {price} Punkte pro Jahr!) entschieden. \
-Bitte zahle dein Abo sofort.'.format(magazine=magazine,
-                                     now=colored('JETZT', 'red',
-                                                 attrs=['blink']),
-                                     price=price))
-
-
-def get_abo():
-    '''
-    Choses a random magazine from the dict below and returns the name and the
-    corresponding price
-    '''
-    abodict = {'Bravo Girl': 2, 'Playboy': 4, 'HÖRZU': 1, 'happinez': 5,
-               'Brigitte Woman': 3, 'Emotion Slow': 1, 'Tätowier Magazin': 4,
-               'Federwelt': 2, 'Der LEUCHTTURM': 6, 'Bummi': 3,
-               'Feuerwehrmann Sam': 4, 'Teen Wolf': 2, 'Bravo Sport': 2,
-               'Gala': 4, 'Popcorn': 1}
-    random.seed()
-    abolist = []
-    for key in abodict:
-        abolist.append(key)
-    i = abolist[random.randint(0, len(abolist) - 1)]
-    return i, abodict[i]
+                  '\nVergiss nicht es zu ändern.')
 
 def save():
     '''
@@ -118,7 +76,7 @@ def chill(clear=True):
     the screen afterwards.
     '''
     try:
-        os.system('read')
+        os.system('read _')
     except whatever_it_is:
         os.system('pause')
     if clear:
@@ -130,6 +88,8 @@ def loader(time):
     A loading animation that is being called with the amount of time,
     the system should display the animation.
     '''
+    if sudomode:
+        return
     time = time - 5
     if en:
         print('Loading...')
@@ -192,7 +152,7 @@ def startup():
         with open(backupfile, 'rb') as fp:
             users = pickle.load(fp)
         print('[{nr} users recovered]\n'.format(nr=len(users)))
-    os.system('clear')
+    chill()
 
 
 def welcome():
@@ -207,7 +167,9 @@ def welcome():
               '      1 - Matriculate a new student\n',
               '      2 - List all students\n',
               '      3 - Change password of an student\n',
-              '      4 - Matriculate a student with temporary login\n\n',
+              '      4 - Matriculate a student with temporary login\n',
+              '      5 - Change the name in the base data\n',
+              '      6 - Change the address in your base data\n\n'
               '      Um zu Deutsch zu wechseln tippe "de"\n')
     else:
         print('-' * 80,
@@ -217,7 +179,9 @@ def welcome():
               '      1 - Neuen Studenten immatrikulieren\n',
               '      2 - Liste der Studenten\n',
               '      3 - Passwort eines Studenten ändern\n',
-              '      4 - Studenten mit temporären Login immatrikulieren\n\n',
+              '      4 - Studenten mit temporären Login immatrikulieren\n',
+              '      5 - Ändere den Namen in den Stammdaten\n',
+              '      6 - Ändere die Adresse in den Stammdaten\n\n'
               '      To change to english type "en"\n')
 
 
@@ -231,11 +195,16 @@ def commands():
     global sudomode
     cmd = input('Deine Auswahl: ')
     if cmd == 'exit':
-        quit()
+        if sudomode:
+            quit()
+        else:
+            print(colored('NOPE!', 'red'))
+            chill()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
     if rand < 4 and cmd not in ['semester++', 'semester--', '42', '1337',
-    														'credits', 'en', 'de', 'wartung','sudo']:
+    							'credits', 'en', 'de', 'wartung','sudo',
+                                'logout', 'exit']:
         time = random.randint(1, sys.maxsize) % 91 + 30
         loader(time)
     if cmd == '1':
@@ -243,17 +212,13 @@ def commands():
     elif cmd == '2':
         listusers()
     elif cmd == '3':
-        if semester == 2:
-            changepass()
-        else:
-            if en:
-                print('You can change passwords only in the second semester!')
-            else:
-                print('Das Ändern des Passworts ist nur im zweiten Semester \
-möglich!')
-            chill()
+        changepass()
     elif cmd == '4':
         adduser(True)
+    elif cmd == '5':
+        changename()
+    elif cmd == '6':
+        changeaddress()
     elif cmd == '42':
         if en:
             print('You found a secret!')
@@ -270,9 +235,10 @@ möglich!')
         credits()
     elif cmd == 'sudo':
         sudo()
-        os.system('clear')
+    elif cmd == 'logout':
+        logout()
     elif cmd == 'semester++':
-        if semester >= 4:
+        if semester >= 2:
             print("Auch Admins müssen bisschen mitdenken. Mehr geht nicht!")
             chill()
         else:
@@ -302,14 +268,12 @@ möglich!')
     elif cmd == 'en':
         print(colored('Changing language...', 'red'))
         en = True
-        if not sudomode:
-            loader(60)
+        loader(60)
         os.system('clear')
     elif cmd == 'de':
         print(colored('Wechsele Sprache...', 'red'))
         en = False
-        if not sudomode:
-            loader(60)
+        loader(60)
         os.system('clear')
     elif cmd == 'wartung':
         wartung()
@@ -323,7 +287,7 @@ möglich!')
 
 def sudo():
     '''
-    Switches system to sudo mode and back
+    Switches system to sudo mode if presented with correct credentials from sudoers
     '''
     global sudomode
     if not sudomode:
@@ -334,7 +298,7 @@ def sudo():
         if username in sudoers.sudoers:
             if sudoers.sudoers[username] == pw:
                 sudomode = True
-                chill()
+                os.system('clear')
             else:
                 if en:
                     print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
@@ -348,8 +312,23 @@ def sudo():
                 print(colored("Sie sind nicht in der Sudoers Datei. Dieser Vorfall wird gemeldet!", 'red'))
             loader(60)
     else:
+        if en:
+            print(colored("You are already root. What do you want more?", "red"))
+            chill()
+        else:
+            print(colored("Du bist schon root. Was willst du mehr?", "red"))
+            chill()
+
+def logout():
+    '''
+    Switches the system to protected non sudo mode or to wartung
+    '''
+    global sudomode
+    if sudomode:
         sudomode = False
         chill()
+    else:
+        wartung()
 
 def uid_gen():
     '''
@@ -378,8 +357,7 @@ def passwordgen():
 
 def changepass():
     '''
-    Changes the password of a user. Exmatriculates him if he types in
-    a wrong old password.
+    Changes the password of a user.
     '''
     changed = False
     user = ''
@@ -390,23 +368,70 @@ def changepass():
     for u in users:
         if user == u.uid:
             if input('Gib dein altes Passwort ein: ') != u.fpass:
-                print(colored('Falsches Passwort!', 'red', attrs=['blink']),
-                      '\nAus Sicherheitsgründen müssen wir dich leider \
-exmatrikulieren.\nDas tut uns sehr Leid!')
-                users.remove(u)
-                print_doge()
-                save()
+                print(colored('Falsches Passwort!', 'red', attrs=['blink']))
                 chill()
                 return
             inp = input('Gib dein neues Passwort ein: ')
+            u.password = inp
             u.fpass = len(inp) * '*'
             print('Passwort erfolgreich geändert!')
             changed = True
             save()
     if not changed:
         print('Das ist eine falsche User ID. Das war ein bisschen dumm.')
-    random_abo()
-    chill()
+        chill()
+
+
+def changename():
+    '''
+    Changes the name of a user when presented with the correct password
+    '''
+    user=''
+    if en:
+        user = input('Type in your User ID: ')
+    else:
+        user = input('Trage deine User ID ein: ')
+    for u in users:
+        if user == u.uid:
+            if u.password == '':
+                print('Bitte ändere dein Initial Passwort')
+                chill()
+                return
+            if input('Gib dein Passwort ein: ') != u.password:
+                print(colored('Falsches Passwort!', 'red', attrs=['blink']))
+                chill()
+            newfname = input('Gib bitte deinen neuen Vornamen ein: ')
+            newlname = input('Gib bitte deinen neuen Vornamen ein: ')
+            u.first = newfname
+            u.last = newlname
+            print('Herzlichen Glückwunsch zur Namensänderung!')
+            save()
+            chill()
+
+
+def changeaddress():
+    '''
+    Changes the address of a user when presented with the correct password
+    '''
+    user=''
+    if en:
+        user = input('Type in your User ID: ')
+    else:
+        user = input('Trage deine User ID ein: ')
+    for u in users:
+        if user == u.uid:
+            if u.password == '':
+                print('Bitte ändere dein Initial Passwort')
+                chill()
+                return
+            if input('Gib dein Passwort ein: ') != u.password:
+                print(colored('Falsches Passwort!', 'red', attrs=['blink']))
+                chill()
+            newaddress = input('Gib bitte deine neue Adresse ein: ')
+            u.address = newaddress
+            print('Herzlichen Glückwunsch zur Adressänderung!')
+            save()
+            chill()
 
 
 def generator(size=20, chars=string.ascii_uppercase + string.digits):
@@ -425,21 +450,30 @@ def adduser(temorary = False):
     print(prompt)
     fname = input('Vorname: ')
     lname = input('Nachname: ')
+    address = input('Adresse: ')
     dob = input('Geburtsdatum (dd.mm.yyyy): ')
     while not re.match(r'[0-3][0-9]\.[0-1][0-9]\.[0-9]{4}', dob):
         print(colored('\nFALSCHE DATUMSANGABE!', 'red'), '\n\nLade Eingabe \
 neu...')
         sleep(30)
         dob = input('Geburtsdatum (dd.mm.yyyy): ')
-    users.append(User(fname, lname, dob))
+    users.append(User(fname, lname, dob, address))
     save()
     chill()
-
 
 def listusers():
     '''
     Lists all users stored in the users list.
     '''
+    global sudomode
+    if not sudomode:
+        if en:
+            print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
+        else:
+            print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
+        loader(60)
+        return
+
     if len(users) == 0:
         print('Keine Studenten in der Datenbank.')
         chill()
