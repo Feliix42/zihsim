@@ -37,7 +37,7 @@ class User():
         self.password = ''
         if en:
             print('\nWelcome, {firstname}! Your USER ID is {uid}.'.format(
-                  firstname=self.first, uid=colored(self.uid, 'yellow',
+                  firstname=self.first, uid=colored(self.uid, 'red',
                                                     'on_white',
                                                     attrs=['blink', 'bold'])),
                   '\nYour one-time password is {passw}.'.format(passw=colored(
@@ -50,7 +50,7 @@ class User():
                   "\nDon't forget to change it.")
         else:
             print('\nWillkommen, {firstname}! Deine USER ID ist {uid}.'.format(
-                  firstname=self.first, uid=colored(self.uid, 'yellow',
+                  firstname=self.first, uid=colored(self.uid, 'red',
                                                     'on_white',
                                                     attrs=['blink', 'bold'])),
                   '\nDein Startpasswort lautet {passw}.'.format(passw=colored(
@@ -82,6 +82,35 @@ def chill(clear=True):
     if clear:
         os.system('clear')
 
+
+def errorfree_loader(time):
+    '''
+    A loading animation that is being called with the amount of time,
+    the system should display the animation.
+    '''
+    if sudomode:
+        return
+    time = time - 5
+    if en:
+        print('Loading...')
+    else:
+        print('Laden...')
+    t_fwd = int(0.3 * time) / 70
+    t_slow_fwd = int(0.7 * time) / 5
+    count = 0
+
+    # up to 70 segments
+    for i in range(70):
+        count += 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_fwd)
+
+    # up to 75 segments
+    for i in range(10):
+        count += 1
+        print('\r{hashtag}'.format(hashtag='#' * count), end=' ')
+        sleep(t_slow_fwd)
+    print('\n')
 
 def loader(time):
     '''
@@ -193,7 +222,11 @@ def commands():
     global semester
     global en
     global sudomode
-    cmd = input('Deine Auswahl: ')
+    try:
+        cmd = input('Deine Auswahl: ')
+    except EOFError:
+        print(colored('Nice try', 'red'))
+        cmd = ''
     if cmd == 'exit':
         if sudomode:
             quit()
@@ -202,10 +235,10 @@ def commands():
             chill()
     random.seed()
     rand = random.randint(1, sys.maxsize) % 10
-    if rand < 4 and cmd not in ['semester++', 'semester--', '42', '1337',
+    if rand < 2 and cmd not in ['semester++', 'semester--', '42', '1337',
     							'credits', 'en', 'de', 'wartung','sudo',
                                 'logout', 'exit']:
-        time = random.randint(1, sys.maxsize) % 91 + 30
+        time = random.randint(1, sys.maxsize) % 11 + 30
         loader(time)
     if cmd == '1':
         adduser()
@@ -249,7 +282,7 @@ def commands():
                     print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
                 else:
                     print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
-                loader(60)
+                errorfree_loader(40)
             os.system('clear')
     elif cmd == 'semester--':
         if semester <= 1:
@@ -263,17 +296,17 @@ def commands():
                     print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
                 else:
                     print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
-                loader(60)
+                errorfree_loader(40)
             os.system('clear')
     elif cmd == 'en':
         print(colored('Changing language...', 'red'))
         en = True
-        loader(60)
+        errorfree_loader(30)
         os.system('clear')
     elif cmd == 'de':
         print(colored('Wechsele Sprache...', 'red'))
         en = False
-        loader(60)
+        errorfree_loader(30)
         os.system('clear')
     elif cmd == 'wartung':
         wartung()
@@ -304,13 +337,13 @@ def sudo():
                     print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
                 else:
                     print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
-                loader(60)
+                errorfree_loader(60)
         else:
             if en:
                 print(colored("You are not in the sudoers file. This incident will be reported!", 'red'))
             else:
                 print(colored("Sie sind nicht in der Sudoers Datei. Dieser Vorfall wird gemeldet!", 'red'))
-            loader(60)
+            errorfree_loader(60)
     else:
         if en:
             print(colored("You are already root. What do you want more?", "red"))
@@ -471,7 +504,7 @@ def listusers():
             print(colored("You don't have enough permissions. This incident will be reported!", 'red'))
         else:
             print(colored("Sie besitzen nicht die nötigen Berechtigungen. Dieser Vorfall wird gemeldet!", 'red'))
-        loader(60)
+        errorfree_loader(40)
         return
 
     if len(users) == 0:
